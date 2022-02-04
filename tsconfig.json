@@ -21,6 +21,6 @@
       "@/atoms/*": ["atoms/*"],
     },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/Alarms.jsx"],
   "exclude": ["node_modules"]
 }

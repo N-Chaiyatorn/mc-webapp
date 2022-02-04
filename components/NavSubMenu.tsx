@@ -41,7 +41,7 @@ function NavSubMenu({ item }) {
         }
       >
         {subnav &&
-          item.subNav.map((item, index) => {
+          item.subNav.map((item, index: Number) => {
             return (
               <Link href={"/" + item.title.replace(/\s+/g, "")} key={index}>
                 <div
