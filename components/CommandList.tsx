@@ -14,6 +14,7 @@ const customStyles = {
   }),
 }
 
+
 function CommandList() {
   const { data, isError } = useFetch(
     "http://localhost:3165/satellites"

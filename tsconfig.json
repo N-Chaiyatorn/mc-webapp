@@ -19,8 +19,10 @@
       "@/components/*": ["components/*"],
       "@/hooks/*": ["hooks/*"],
       "@/atoms/*": ["atoms/*"],
+      "@/types/*": ["types/*"]
     },
+    "typeRoots": ["types", "node_modules/@types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/Alarms.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

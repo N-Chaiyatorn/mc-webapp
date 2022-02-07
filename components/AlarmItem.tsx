@@ -9,7 +9,13 @@ function AlarmItem({ alarm }) {
       <div className="basis-1/6">{id}</div>
       <div className="basis-1/6">{name}</div>
       <div className="basis-1/6">{message}</div>
-      <div className="basis-1/6">{criticality}</div>
+
+      <div
+        className={"basis-1/6 " + (criticality == "CRITICAL" && "text-red-500")}
+      >
+        {criticality}
+      </div>
+
       <div className="basis-1/6">{status}</div>
     </div>
   );

@@ -6,7 +6,7 @@ function AlarmsTable() {
   const { data: alarms, isLoading } = useFetch("http://localhost:3165/alarms");
 
   return (
-    <div className="flex flex-col py-8 px-20 bg-cyan-800 text-gray-200">
+    <div className="flex flex-col py-8 px-20 bg-cyan-800 text-">
       <div className="flex items-center">
         <div className="basis-1/6">Date</div>
         <div className="basis-1/6">ID</div>

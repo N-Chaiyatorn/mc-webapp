@@ -1,8 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-const useFetch = (initUrl: string) => {
-  const [data, setData] = useState([]);
+interface Response<objType> {
+  data?: objType;
+  isLoading: boolean;
+  isError: boolean;
+  setUrl: Dispatch<SetStateAction<string>>;
+}
+
+const useFetch = <objType>(initUrl: string): Response<objType> => {
+  const [data, setData] = useState(undefined);
   const [url, setUrl] = useState(initUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -18,9 +26,10 @@ const useFetch = (initUrl: string) => {
       }
       setIsLoading(false);
     };
+
     fetchData();
   }, [url]);
-    
+
   return { data, isLoading, isError, setUrl };
 };
 

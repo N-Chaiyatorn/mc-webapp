@@ -8,7 +8,7 @@ interface Navbar {
   icon: ReactElement;
   iconClosed?: ReactElement;
   iconOpened?: ReactElement;
-  subNav?: Subnav[];
+  subNav?: Subnav[] | null;
 }
 
 interface Subnav {
