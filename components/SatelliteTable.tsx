@@ -7,7 +7,7 @@ interface Satellite {
   satelliteId: string;
   satelliteName: string;
   description?: string;
-  command?: any[];
+  commands?: any[];
   telemetry?: any[];
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-function AlarmItem({ alarm }) {
+function AlarmItem({ alarm }: any) {
   const { date, id, name, message, criticality, status } = alarm;
 
   return (

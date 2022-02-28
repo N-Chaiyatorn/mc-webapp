@@ -14,9 +14,16 @@ const customStyles = {
   }),
 }
 
+interface Satellite {
+  satelliteId: string;
+  satelliteName: string;
+  description?: string;
+  commands?: any[];
+  telemetry?: any[];
+}
 
 function CommandList() {
-  const { data, isError } = useFetch(
+  const { data, isError } = useFetch<Satellite[]>(
     "http://localhost:3165/satellites"
   );
 
@@ -29,6 +36,7 @@ function CommandList() {
   };
 
   useEffect(() => {
+    if (!data) return
     if (data.length !== 0 && itemList.length === 0) {
       let satalliteIdOptions = [];
       data.forEach((satellite) => {
@@ -43,6 +51,7 @@ function CommandList() {
   }, [data]);
 
   useEffect(() => {
+    if (!data) return
     if (data.length !== 0) {
       const target = data.filter((satellite) => {
         return satellite.satelliteId === targetId;

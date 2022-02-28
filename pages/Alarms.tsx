@@ -17,7 +17,7 @@ export default function home() {
         </main>
       </div>
 
-      <footer>{/* Footer */}</footer>
+      <footer>{/* <SelectedSatellite /> */}</footer>
     </div>
   );
 }

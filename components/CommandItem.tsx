@@ -3,7 +3,7 @@ import { useState } from "react";
 
 
 
-function CommandItem({ command }) {
+function CommandItem({ command }: any) {
   const [argument, setArgument] = useState("");
   const [showPanel, setShowPanel] = useState(false);
 
