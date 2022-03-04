@@ -1,119 +1,82 @@
-import { useEffect, useState } from "react";
-import Select from "react-select";
-import useFetch from "../hooks/useFetch";
+import { commandDataState, errorDataState } from "@/atoms/commandsAtom";
+
 import CommandItem from "./CommandItem";
+import Link from "next/link";
+import Select from "react-select";
+import { useRecoilValue } from "recoil";
 
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    color: "black",
-    backgroundColor: state.isSelected && "gray",
-    "&:hover": {
-      backgroundColor: "gray",
-    }
-  }),
-}
-
-interface Satellite {
-  satelliteId: string;
-  satelliteName: string;
-  description?: string;
-  commands?: any[];
-  telemetry?: any[];
-}
+const customSelect = {
+    option: (styles, { isFocused }) => {
+        return {
+            ...styles,
+            backgroundColor: isFocused ? "#ffffff" : "#2C3333",
+            color: isFocused ? "#2C3333" : "#ffffff",
+        };
+    },
+    control: (base, state) => {
+        return {
+            ...base,
+            background: "#000000",
+            color: "#ffffff",
+            borderColor: state.isFocused ? "#ffffff" : "#2C3333",
+        };
+    },
+    singleValue: (provided) => {
+        return {
+            ...provided,
+            color: "#ffffff",
+        };
+    },
+};
 
 function CommandList() {
-  const { data, isError } = useFetch<Satellite[]>(
-    "http://localhost:3165/satellites"
-  );
+    const commands = useRecoilValue(commandDataState);
+    const error = useRecoilValue(errorDataState);
 
-  const [targetId, setTargetId] = useState(null);
-  const [commands, setCommands] = useState(null);
-  const [itemList, setItemList] = useState([]);
+    return (
+        <div className="flex-col items-center w-auto h-[80%] p-10 text-lg text-gray-200">
+            {commands.length === 0 ? (
+                <div className="flex flex-col justify-center items-center">
+                    <h1 className="text-5xl mb-5">No command data</h1>
+                    <h2>Please select a satellite on header</h2>
+                </div>
+            ) : (
+                <div className="w-full pb-5">
+                    <Select
+                        placeholder="Select or type the name of a satellite"
+                        styles={customSelect}
+                        theme={(theme) => ({
+                            ...theme,
+                            borderRadius: 0,
+                        })}
+                    />
+                </div>
+            )}
 
-  const handleFormChange = (option) => {
-    setTargetId(option.value);
-  };
+            {error && (
+                <div className="ml-3 text-sm text-red-900">
+                    Error fetching the satellites metadata
+                </div>
+            )}
 
-  useEffect(() => {
-    if (!data) return
-    if (data.length !== 0 && itemList.length === 0) {
-      let satalliteIdOptions = [];
-      data.forEach((satellite) => {
-        let satelliteIdObject = {
-          value: satellite.satelliteId,
-          label: satellite.satelliteId,
-        };
-        satalliteIdOptions.push(satelliteIdObject);
-      });
-      setItemList(satalliteIdOptions);
-    }
-  }, [data]);
+            <div className="flex flex-row flex-wrap justify-between items-start">
+                {commands.map((command) => (
+                    <CommandItem key={command.commandId} command={command} />
+                ))}
+            </div>
 
-  useEffect(() => {
-    if (!data) return
-    if (data.length !== 0) {
-      const target = data.filter((satellite) => {
-        return satellite.satelliteId === targetId;
-      });
-      try {
-        setCommands(target[0].commands);
-      } catch {
-        setCommands(null);
-      }
-    }
-  }, [data, targetId]);
-
-  return (
-    <div className="flex-col p-10 items-center text-lg text-gray-200">
-
-      <Select
-        instanceId="asd4s8a6d4q"
-        value={itemList.filter(function(option) {
-          return option.value === targetId;
-        })}
-        options={itemList}
-        onChange={(option) => handleFormChange(option)}
-        styles={customStyles}
-      />
-
-      {isError && (
-        <div className="ml-3 text-sm text-red-900">
-          Error fetching the satellites metadata
+            <div className="float-right">
+                <button className="w-[140px] p-3 bg-[#eeeeee] text-[#000000]">
+                    Reset
+                </button>
+                <Link href="/CommandList/Summary">
+                    <button className="w-[140px] p-3 ml-8 bg-[#c4c4c4] text-[#000000]">
+                        Next
+                    </button>
+                </Link>
+            </div>
         </div>
-      )}
-
-      {commands && (
-        <div className="flex-col w-full my-auto text-left text-sm lg:text-base py-2 px-2">
-          <div
-            className="flex items-center text-base lg:text-lg text-left
-          text-ellipsis overflow-hidden whitespace-nowrap h-[4rem]"
-          >
-            <div className="basis-1/3 lg:basis-1/4">Command ID</div>
-            <div className="basis-1/3 lg:basis-1/4">Name</div>
-            <div className="basis-1/3 lg:basis-1/4">Significance Level</div>
-            <div className="basis-1/3 hidden lg:basis-1/4 lg:table-cell">
-              Description
-            </div>
-          </div>
-          {commands.length != 0 ? (
-            <div>
-              {commands.map((command) => (
-                <CommandItem
-                  key={command.commandId}
-                  command={command}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center py-5 text-xl">
-              Target ID: {targetId} has no commands
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default CommandList;

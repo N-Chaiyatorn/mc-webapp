@@ -1,6 +1,6 @@
+import Header from "@/components/Header";
 import SatelliteTable from "@/components/SatelliteTable";
 import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
 
 export default function home() {
   return (
