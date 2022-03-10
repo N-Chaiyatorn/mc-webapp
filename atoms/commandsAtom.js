@@ -5,11 +5,6 @@ export const sidebarToggleState = atom({
   default: true,
 });
 
-export const modalToggleState = atom({
-  key: "modalState",
-  default: false,
-});
-
 export const commandDataState = atom({
   key: "commandState",
   default: [],
@@ -20,7 +15,7 @@ export const errorDataState = atom({
   default: false,
 });
 
-export const filteredCommandDataState = atom({
-  key: "filteredCommandState",
+export const selectedCommandDataState = atom({
+  key: "selectedCommandState",
   default: [],
 });

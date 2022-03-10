@@ -49,7 +49,7 @@ function Header() {
     const [, setError] = useRecoilState(errorDataState);
     const [, setCommands] = useRecoilState(commandDataState);
     const [open, setOpen] = useRecoilState(sidebarToggleState);
-    const { data, isError } = useFetch<Satellite[]>(
+    const { data: command, isError } = useFetch<Satellite[]>(
         "http://localhost:3165/satellites"
     );
 
@@ -68,38 +68,37 @@ function Header() {
     // Set the satellite data to state
     // by loop through every arrays
     React.useEffect(() => {
-        if (!data) return;
+        if (!command) return;
         if (isError) {
             setError(isError);
         }
 
         // Check if the length of data is not equal to zero
         // and if the length of itemList (initial value is null) is equal to zero
-        if (data.length !== 0 && itemList.length === 0) {
+        if (command.length !== 0 && itemList.length === 0) {
             let satelliteIdOptions = [];
 
             // Use Id as the value to use for further step
             // and use name for label to show in search
-            data.forEach((satellite) => {
+            command.forEach((satellite) => {
                 let satelliteIdObject = {
                     value: satellite.satelliteId,
                     label: satellite.satelliteName,
-                } 
+                };
                 satelliteIdOptions.push(satelliteIdObject);
             });
             setItemList(satelliteIdOptions);
         }
-    }, [data]);
+    }, [command]);
 
     // Set commands of satellite to global state
     React.useEffect(() => {
-        if (!data) return null;
-        if (data.length !== 0) {
+        if (!command) return;
+        if (command.length !== 0) {
             // Filter out the array of command by comparing satellite ID and item ID from handleSelect
-            const item = data.filter(
+            const item = command.filter(
                 (satellite) => satellite.satelliteId === itemId
             );
-            console.log(item)
 
             try {
                 setCommands(item[0].commands);
@@ -107,7 +106,7 @@ function Header() {
                 setCommands([]);
             }
         }
-    }, [data, itemId]);
+    }, [command, itemId]);
 
     return (
         <header

@@ -1,34 +1,35 @@
 import { BiCheckboxChecked } from "react-icons/bi";
 import ModalItem from "./Modal/ModalItem";
 import React from "react";
-import { modalToggleState } from "@/atoms/commandsAtom";
-import { useRecoilState } from "recoil";
 
 function CommandItem(props: any) {
     const { command } = props;
-    const [open, setOpen] = useRecoilState(modalToggleState);
+    const [open, setOpen] = React.useState(false);
+    const [selectedModal, setSelectedModal] = React.useState(false);
 
-    const toggleModal = (e) => {
+    const handleClick = () => {
         setOpen(!open);
-        console.log(e);
     };
 
     return (
         <>
             <div
-                className="flex flex-col justify-between relative p-6 bg-[#2C3333] cursor-pointer"
-                onClick={() => toggleModal(command.commandId)}
+                key={command.commandId}
+                onClick={handleClick}
+                className="flex flex-col justify-between relative p-6 bg-[#2C3333] hover:bg-[#616161] hover:opacity-70 cursor-pointer"
             >
                 <p className="text-[15px]">{command.commandId}</p>
                 <hr className="border-3 my-3" />
                 <h2 className="font-semibold">{command.name}</h2>
 
-                <div className="absolute right-[0] top-[0] lg:text-[2rem]">
-                    <BiCheckboxChecked />
-                </div>
+                {selectedModal && (
+                    <div className="absolute right-[0] top-[0] lg:text-[2rem] animate-bounce">
+                        <BiCheckboxChecked />
+                    </div>
+                )} 
             </div>
 
-            <ModalItem command={command} />
+            {open && <ModalItem command={command} onClose={setOpen} />}
         </>
     );
 }

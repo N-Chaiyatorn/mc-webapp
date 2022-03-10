@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function MondalConfirm(props: any) {
-    const { open, modalClose } = props;
+    const { open, close } = props;
 
     return (
         open && (
@@ -18,7 +18,7 @@ export default function MondalConfirm(props: any) {
                             Send
                         </button>
                         <button
-                            onClick={() => modalClose(!open)}
+                            onClick={() => close(!open)}
                             className="w-[11em] p-3 ml-8 bg-[#c4c4c4] text-[#000]"
                         >
                             Cancel
